@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CampusConnect — App Documentation</title>
+<style>
+:root{
+  --bg:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b; --line:#e3e3e3; --line-dark:#333;
+  --accent:#2b6cb0; --tag-bg:#f2f2f2; --card:#fff;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);}
+.topbar{font-size:.75rem;color:var(--muted);padding:12px 20px 0;display:flex;justify-content:space-between;max-width:1000px;margin:0 auto;}
+main{max-width:1000px;margin:0 auto;padding:10px 20px 60px;}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px;}
+.tab{border:1px solid var(--line);background:#fff;padding:8px 16px;border-radius:6px;font-size:.85rem;cursor:pointer;color:var(--muted);}
+.tab.active{border-color:var(--line-dark);color:var(--ink);font-weight:600;}
+.panel{display:none;}
+.panel.active{display:block;}
+h2.section{font-size:.85rem;letter-spacing:.03em;color:#444;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:20px;text-transform:uppercase;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:30px;}
+@media(max-width:600px){.stat-grid{grid-template-columns:1fr;}}
+.stat-label{font-size:.75rem;color:var(--muted);margin-bottom:2px;}
+.stat-num{font-size:1.6rem;font-weight:700;margin-bottom:2px;}
+.stat-desc{font-size:.85rem;color:#333;}
+.insights-title{font-size:.85rem;letter-spacing:.03em;color:#444;border-bottom:1px solid var(--line);padding-bottom:10px;margin:10px 0 14px;text-transform:uppercase;}
+.insight{display:flex;gap:8px;font-size:.9rem;margin-bottom:10px;color:#222;}
+.insight span.arrow{color:#888;}
+.hmw{border-left:3px solid var(--line-dark);padding:14px 18px;margin-top:20px;background:#fafafa;}
+.hmw h4{margin:0 0 6px;font-size:.85rem;}
+.hmw p{margin:0;font-size:.9rem;color:#333;}
+
+.persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+@media(max-width:700px){.persona-grid{grid-template-columns:1fr;}}
+.persona{border:1px solid var(--line);border-radius:8px;padding:18px;}
+.p-initials{width:34px;height:34px;border-radius:50%;background:#eef2f7;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;margin-bottom:12px;}
+.p-name{font-weight:700;font-size:1rem;margin-bottom:2px;}
+.p-sub{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
+.p-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.p-tag{background:var(--tag-bg);border-radius:14px;padding:4px 10px;font-size:.72rem;color:#333;}
+.p-line{font-size:.85rem;color:#222;margin-bottom:8px;}
+
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.fbox{border:1.5px solid var(--line-dark);border-radius:8px;padding:12px 16px;font-size:.85rem;font-weight:600;background:#fff;min-width:90px;text-align:center;}
+.farrow{color:#888;font-size:1.1rem;}
+.flow-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px;}
+.flow-branch{margin-left:50px;color:#888;font-size:.8rem;}
+
+.wire-title{font-size:.85rem;letter-spacing:.03em;color:#444;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:24px;text-transform:uppercase;}
+.wire-grid{display:flex;flex-wrap:wrap;gap:26px;}
+.wframe{width:190px;}
+.wframe .cap{text-align:center;font-size:.78rem;color:#333;margin-top:8px;}
+.phone-out{border:1.5px solid var(--line-dark);border-radius:10px;height:340px;padding:12px 10px;position:relative;background:#fff;}
+.pill{border:1.3px solid var(--line-dark);border-radius:14px;height:14px;margin-bottom:8px;}
+.pill.w60{width:60%;}
+.pill.w40{width:40%;}
+.box-o{border:1.3px solid var(--line-dark);border-radius:4px;}
+.tiny-lbl{font-size:.55rem;color:#555;margin-bottom:3px;letter-spacing:.02em;text-transform:uppercase;}
+.dashed{border:1.3px dashed #999;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999;font-size:.55rem;text-transform:uppercase;}
+.row3{display:flex;gap:5px;margin-bottom:8px;}
+.oval-sm{flex:1;height:16px;border:1.3px solid var(--line-dark);border-radius:10px;}
+.circle-sm{width:14px;height:14px;border:1.3px solid var(--line-dark);border-radius:50%;margin-bottom:10px;}
+
+.dt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:650px){.dt-grid{grid-template-columns:1fr;}}
+.dt-card{border:1px solid var(--line);border-radius:8px;padding:16px;}
+.dt-icon{font-size:1.1rem;margin-bottom:6px;}
+.dt-title{font-weight:700;font-size:.9rem;margin-bottom:6px;}
+.dt-desc{font-size:.83rem;color:#333;margin-bottom:10px;}
+.dt-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.dt-tag{background:var(--tag-bg);border-radius:12px;padding:3px 9px;font-size:.68rem;color:#444;}
+</style>
+</head>
+<body>
+<div class="topbar"><span>27/09/26, 9:55 PM</span><span>CampusConnect Documentation</span></div>
+<main>
+  <div class="tabs">
+    <div class="tab active" data-tab="research">User Research</div>
+    <div class="tab" data-tab="personas">Personas</div>
+    <div class="tab" data-tab="flow">User Flow</div>
+    <div class="tab" data-tab="wireframes">Wireframes</div>
+    <div class="tab" data-tab="thinking">Design Thinking</div>
+  </div>
+
+  <!-- USER RESEARCH -->
+  <div class="panel active" id="research">
+    <h2 class="section">User Research — College Students (N = 22 interviews)</h2>
+    <div class="stat-grid">
+      <div>
+        <div class="stat-label">Primary pain point</div>
+        <div class="stat-num">76%</div>
+        <div class="stat-desc">struggle tracking attendance &amp; deadlines across scattered sources</div>
+      </div>
+      <div>
+        <div class="stat-label">Decision driver</div>
+        <div class="stat-num">71%</div>
+        <div class="stat-desc">just want today's schedule visible in one glance, no digging</div>
+      </div>
+      <div>
+        <div class="stat-label">Session length</div>
+        <div class="stat-num">1.8m</div>
+        <div class="stat-desc">avg time from open to checking today's classes</div>
+      </div>
+      <div>
+        <div class="stat-label">Daily return rate</div>
+        <div class="stat-num">84%</div>
+        <div class="stat-desc">open app daily just to check attendance %</div>
+      </div>
+    </div>
+
+    <div class="insights-title">Key Insights</div>
+    <div class="insight"><span class="arrow">→</span>Students obsessively track attendance % to stay above the 75% eligibility cutoff</div>
+    <div class="insight"><span class="arrow">→</span>Assignment deadlines are missed because reminders live across WhatsApp, notice boards, and email</div>
+    <div class="insight"><span class="arrow">→</span>Timetable changes (room/time shifts) reach students late or not at all</div>
+    <div class="insight"><span class="arrow">→</span>College announcements get buried under personal chat notifications</div>
+    <div class="insight"><span class="arrow">→</span>Students want one login, not five separate portals/apps for academic info</div>
+    <div class="insight"><span class="arrow">→</span>Dark mode usage: most students keep phone dark mode on permanently</div>
+
+    <div class="hmw">
+      <h4>HMW Statement</h4>
+      <p>How might we help college students track their classes, attendance, and deadlines in one place — with zero missed notices?</p>
+    </div>
+  </div>
+
+  <!-- PERSONAS -->
+  <div class="panel" id="personas">
+    <h2 class="section">User Personas</h2>
+    <div class="persona-grid">
+      <div class="persona">
+        <div class="p-initials">AN</div>
+        <div class="p-name">Anu, 20</div>
+        <div class="p-sub">2nd Year B.Tech CSE, Chennai</div>
+        <div class="p-tags"><span class="p-tag">Organized</span><span class="p-tag">Attendance-anxious</span><span class="p-tag">Daily user</span></div>
+        <div class="p-line">Wants attendance % and today's timetable visible the moment she opens the app</div>
+        <div class="p-line">Frustrated when she misses an assignment deadline buried in a WhatsApp group</div>
+      </div>
+      <div class="persona">
+        <div class="p-initials">RK</div>
+        <div class="p-name">Rahul, 19</div>
+        <div class="p-sub">1st Year B.Com, Bangalore</div>
+        <div class="p-tags"><span class="p-tag">New to college</span><span class="p-tag">Forgetful</span></div>
+        <div class="p-line">Needs simple reminders — doesn't yet know which notice boards or apps to check</div>
+        <div class="p-line">Overwhelmed by multiple separate college portals for fees, marks, and events</div>
+      </div>
+      <div class="persona">
+        <div class="p-initials">SM</div>
+        <div class="p-name">Sara, 22</div>
+        <div class="p-sub">Final Year, Placement-focused, Pune</div>
+        <div class="p-tags"><span class="p-tag">Busy</span><span class="p-tag">Event-driven</span></div>
+        <div class="p-line">Tracks placement drive announcements and event dates closely</div>
+        <div class="p-line">Wants push notifications instead of manually checking for updates</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER FLOW -->
+  <div class="panel" id="flow">
+    <h2 class="section">Primary User Flow — Checking Today's Schedule</h2>
+    <div class="flow-row">
+      <div class="fbox">Open App</div><span class="farrow">→</span>
+      <div class="fbox">Login / Sign Up</div><span class="farrow">→</span>
+      <div class="fbox">Dashboard</div><span class="farrow">→</span>
+      <div class="fbox">Today's Classes</div><span class="farrow">→</span>
+      <div class="fbox">Class Details</div>
+    </div>
+    <div class="flow-row">
+      <div class="fbox">Dashboard</div><span class="farrow">→</span>
+      <div class="fbox">Attendance</div><span class="farrow">→</span>
+      <div class="fbox">Subject-wise %</div>
+    </div>
+    <div class="flow-row">
+      <div class="fbox">Dashboard</div><span class="farrow">→</span>
+      <div class="fbox">Assignments</div><span class="farrow">→</span>
+      <div class="fbox">Due Date View</div><span class="farrow">→</span>
+      <div class="fbox">Submit / Mark Done</div>
+    </div>
+    <div class="flow-row">
+      <div class="fbox">Notification</div><span class="farrow">→</span>
+      <div class="fbox">Event / Announcement</div><span class="farrow">→</span>
+      <div class="fbox">Details</div>
+    </div>
+  </div>
+
+  <!-- WIREFRAMES -->
+  <div class="panel" id="wireframes">
+    <h2 class="wire-title">Lo-Fi Wireframes — Key Screens</h2>
+    <div class="wire-grid">
+
+      <div class="wframe">
+        <div class="phone-out">
+          <div class="circle-sm" style="margin:0 auto 10px;"></div>
+          <div class="pill w60" style="margin:0 auto 6px;"></div>
+          <div class="pill w40" style="margin:0 auto 16px;"></div>
+          <div class="box-o" style="height:26px;margin-bottom:8px;"></div>
+          <div class="box-o" style="height:26px;margin-bottom:14px;"></div>
+          <div class="box-o" style="height:26px;background:#f4f4f4;margin-bottom:10px;"></div>
+          <div class="tiny-lbl" style="text-align:center;">or</div>
+          <div class="box-o" style="height:26px;"></div>
+        </div>
+        <div class="cap">1 — Login</div>
+      </div>
+
+      <div class="wframe">
+        <div class="phone-out">
+          <div class="pill w60" style="margin-bottom:4px;"></div>
+          <div class="pill w40" style="margin-bottom:12px;"></div>
+          <div class="tiny-lbl">Today's Classes</div>
+          <div class="box-o" style="height:18px;margin-bottom:5px;"></div>
+          <div class="box-o" style="height:18px;margin-bottom:10px;"></div>
+          <div class="row3">
+            <div class="box-o" style="flex:1;height:38px;"></div>
+            <div class="box-o" style="flex:1;height:38px;"></div>
+          </div>
+          <div class="row3">
+            <div class="box-o" style="flex:1;height:38px;"></div>
+            <div class="box-o" style="flex:1;height:38px;"></div>
+          </div>
+        </div>
+        <div class="cap">2 — Dashboard</div>
+      </div>
+
+      <div class="wframe">
+        <div class="phone-out">
+          <div class="tiny-lbl">Attendance</div>
+          <div class="dashed" style="height:70px;margin-bottom:10px;">chart</div>
+          <div class="tiny-lbl">Subjects</div>
+          <div class="box-o" style="height:18px;margin-bottom:5px;"></div>
+          <div class="box-o" style="height:18px;margin-bottom:5px;"></div>
+          <div class="box-o" style="height:18px;margin-bottom:5px;"></div>
+          <div class="box-o" style="height:18px;"></div>
+        </div>
+        <div class="cap">3 — Attendance</div>
+      </div>
+
+      <div class="wframe">
+        <div class="phone-out">
+          <div class="tiny-lbl">Assignments</div>
+          <div class="box-o" style="height:34px;margin-bottom:6px;"></div>
+          <div class="box-o" style="height:34px;margin-bottom:6px;"></div>
+          <div class="box-o" style="height:34px;margin-bottom:14px;"></div>
+          <div class="dashed" style="height:26px;">+ add reminder</div>
+        </div>
+        <div class="cap">4 — Assignments</div>
+      </div>
+
+      <div class="wframe">
+        <div class="phone-out">
+          <div class="circle-sm" style="margin:0 auto 8px;"></div>
+          <div class="pill w60" style="margin:0 auto 6px;"></div>
+          <div class="pill w40" style="margin:0 auto 16px;"></div>
+          <div class="box-o" style="height:20px;margin-bottom:6px;"></div>
+          <div class="box-o" style="height:20px;margin-bottom:6px;"></div>
+          <div class="box-o" style="height:20px;margin-bottom:6px;"></div>
+          <div class="box-o" style="height:20px;"></div>
+        </div>
+        <div class="cap">5 — Profile</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DESIGN THINKING -->
+  <div class="panel" id="thinking">
+    <h2 class="section">Design Thinking Process</h2>
+    <div class="dt-grid">
+      <div class="dt-card">
+        <div class="dt-icon">💡</div>
+        <div class="dt-title">1 — Empathise</div>
+        <div class="dt-desc">22 student interviews across 3 colleges, plus review of existing college portals. Found students treat academic apps as anxiety sources (missed deadlines, attendance drop) rather than useful tools.</div>
+        <div class="dt-tags"><span class="dt-tag">Interviews</span><span class="dt-tag">Portal audit</span></div>
+      </div>
+      <div class="dt-card">
+        <div class="dt-icon">🧩</div>
+        <div class="dt-title">2 — Define</div>
+        <div class="dt-desc">Synthesised into three problem themes: Information scatter, Deadline blindness, and Notification overload from irrelevant channels.</div>
+        <div class="dt-tags"><span class="dt-tag">Affinity map</span><span class="dt-tag">HMW statement</span></div>
+      </div>
+      <div class="dt-card">
+        <div class="dt-icon">💭</div>
+        <div class="dt-title">3 — Ideate</div>
+        <div class="dt-desc">Brainstormed 40+ concepts, dot-voted to 5. Key bets: single dashboard for today's classes, live attendance %, and unified notifications.</div>
+        <div class="dt-tags"><span class="dt-tag">Brainstorm</span><span class="dt-tag">Dot voting</span></div>
+      </div>
+      <div class="dt-card">
+        <div class="dt-icon">✏️</div>
+        <div class="dt-title">4 — Prototype</div>
+        <div class="dt-desc">Paper sketches → these lo-fi wireframes → next stage is an interactive Figma prototype. Prioritised 5 core screens covering the daily-use happy path.</div>
+        <div class="dt-tags"><span class="dt-tag">Paper sketch</span><span class="dt-tag">Lo-fi wireframe</span></div>
+      </div>
+      <div class="dt-card">
+        <div class="dt-icon">🧪</div>
+        <div class="dt-title">5 — Test (planned)</div>
+        <div class="dt-desc">5-student usability test targeting a sub-2-minute "check today's schedule" task. Task completion rate and SUS score as KPIs.</div>
+        <div class="dt-tags"><span class="dt-tag">Usability test</span><span class="dt-tag">SUS score</span></div>
+      </div>
+      <div class="dt-card">
+        <div class="dt-icon">🎯</div>
+        <div class="dt-title">Design Decisions</div>
+        <div class="dt-desc">Dashboard leads with today's classes, not a generic home feed. Attendance % surfaced prominently, not buried in a menu. Assignments include an inline reminder CTA.</div>
+        <div class="dt-tags"><span class="dt-tag">Dashboard-first</span><span class="dt-tag">Attendance UX</span></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
